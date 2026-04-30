@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Umesh Narayanappa — AI Builder</title>
+<meta name="description" content="Voice agents and AI apps, built like infrastructure." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: oklch(0.987 0.002 250);
+    --bg-2: oklch(0.965 0.003 250);
+    --ink: oklch(0.18 0.01 250);
+    --ink-2: oklch(0.42 0.01 250);
+    --ink-3: oklch(0.62 0.008 250);
+    --rule: oklch(0.90 0.005 250);
+    --rule-2: oklch(0.94 0.004 250);
+    --accent: oklch(0.62 0.18 250);
+    --accent-soft: oklch(0.62 0.18 250 / 0.12);
+    --good: oklch(0.7 0.17 150);
+  }
+  [data-theme="dark"] {
+    --bg: oklch(0.14 0.005 250);
+    --bg-2: oklch(0.18 0.006 250);
+    --ink: oklch(0.96 0.004 250);
+    --ink-2: oklch(0.74 0.005 250);
+    --ink-3: oklch(0.55 0.006 250);
+    --rule: oklch(0.26 0.008 250);
+    --rule-2: oklch(0.22 0.007 250);
+    --accent-soft: oklch(0.62 0.18 250 / 0.18);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background 240ms ease, color 240ms ease;
+  }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  ::selection { background: var(--accent-soft); color: var(--ink); }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
+
+  /* ── Layout ─────────────────────────────────────────────────────── */
+  .app { min-height: 100vh; display: flex; flex-direction: column; }
+  .main { flex: 1; max-width: 1180px; width: 100%; margin: 0 auto; padding: 0 56px; }
+
+  /* ── Header ─────────────────────────────────────────────────────── */
+  .hdr {
+    max-width: 1180px; width: 100%; margin: 0 auto;
+    padding: 28px 56px 24px;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hdr-left { display: flex; gap: 18px; align-items: center; }
+  .hdr-mark { font-size: 22px; font-weight: 500; letter-spacing: -0.5px; }
+  .hdr-mark .dot { color: var(--accent); }
+  .hdr-who { display: flex; flex-direction: column; gap: 2px; }
+  .hdr-name { font-weight: 500; }
+  .hdr-role { font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.6px; }
+  .hdr-nav { display: flex; gap: 28px; padding-top: 8px; }
+  .hdr-nav button {
+    font-size: 12px; color: var(--ink-2); letter-spacing: 0.4px; text-transform: uppercase;
+    transition: color 160ms ease;
+  }
+  .hdr-nav button:hover { color: var(--ink); }
+
+  /* ── Hero ───────────────────────────────────────────────────────── */
+  .hero { padding: 120px 0 80px; }
+  .hero-grid {
+    display: grid; grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 56px; align-items: center;
+  }
+  .hero-main { min-width: 0; }
+
+  /* Signal: live dot + waveform (voice) + pulsing AI node */
+  .hero-signal {
+    display: inline-flex; align-items: center; gap: 14px;
+    height: 24px; margin-bottom: 36px;
+  }
+  .hero-signal-live {
+    width: 8px; height: 8px; border-radius: 99px; background: var(--good);
+    box-shadow: 0 0 0 0 oklch(0.7 0.17 150 / 0.5);
+    animation: pulse 2s ease-out infinite;
+  }
+  .hero-signal-wave { display: inline-flex; align-items: center; gap: 3px; height: 24px; }
+  .hero-signal-wave span {
+    width: 2px; border-radius: 2px;
+    background: var(--accent);
+    height: 3px;
+    animation: signalwave 1400ms ease-in-out infinite;
+    animation-delay: calc(var(--i) * 80ms);
+  }
+  .hero-signal-ai {
+    position: relative;
+    width: 8px; height: 8px; border-radius: 99px;
+    background: var(--accent);
+  }
+  .hero-signal-ai::before,
+  .hero-signal-ai::after {
+    content: ''; position: absolute; inset: 0; border-radius: 99px;
+    background: var(--accent);
+    animation: pulse 2.4s ease-out infinite;
+  }
+  .hero-signal-ai::after { animation-delay: 1.2s; }
+
+  .hero-title {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: clamp(40px, 5.4vw, 64px);
+    line-height: 1.04; letter-spacing: -1.8px; font-weight: 400;
+    margin: 0 0 28px;
+    text-wrap: balance;
+  }
+  .hero-lede {
+    font-size: 18px; line-height: 1.55; color: var(--ink-2);
+    margin: 0; text-wrap: pretty;
+  }
+  .hero-proof {
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    font-size: 11px; color: var(--ink-3); letter-spacing: 1.2px;
+    margin: 28px 0 22px;
+  }
+  .hero-proof-sep { color: var(--rule); }
+  .hero-ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .hero-side {
+    border: 1px solid var(--rule); border-radius: 10px;
+    background: var(--bg-2); overflow: hidden;
+    box-shadow: 0 1px 0 oklch(0 0 0 / 0.02);
+  }
+  .hero-side-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 16px; border-bottom: 1px solid var(--rule);
+    font-size: 10px; letter-spacing: 1.2px; color: var(--ink-3);
+  }
+  .hero-side-status { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); }
+  .hero-side-dot {
+    width: 6px; height: 6px; border-radius: 99px; background: var(--good);
+    box-shadow: 0 0 0 0 oklch(0.7 0.17 150 / 0.5);
+    animation: pulse 2s ease-out infinite;
+  }
+  .hero-side-body {
+    padding: 18px 16px 16px;
+    transition: opacity 320ms ease;
+  }
+  .hero-side-body[data-fading="true"] { opacity: 0; }
+  .hero-side-row { display: grid; grid-template-columns: 48px 1fr; gap: 14px; align-items: center; }
+  .hero-side-avatar {
+    width: 48px; height: 48px; border-radius: 99px;
+    background: var(--bg); border: 1px solid var(--rule);
+    display: grid; place-items: center;
+  }
+  .hero-side-avatar .waveform { gap: 2px; height: 28px; }
+  .hero-side-avatar .waveform span { width: 2px; }
+  .hero-side-name { font-size: 18px; font-weight: 400; letter-spacing: -0.3px; }
+  .hero-side-meta {
+    font-size: 10px; color: var(--ink-3); letter-spacing: 0.6px;
+    text-transform: uppercase; margin-top: 4px;
+  }
+  .hero-side-quote {
+    margin-top: 16px; padding-top: 14px;
+    border-top: 1px dashed var(--rule);
+    font-size: 13px; line-height: 1.5; color: var(--ink-2);
+  }
+  .hero-side-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 16px; border-top: 1px solid var(--rule);
+    font-size: 10px; color: var(--ink-3); letter-spacing: 0.8px;
+  }
+
+  /* ── Filter bar ─────────────────────────────────────────────────── */
+  #work { margin-top: 96px; }
+  .fb {
+    display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap;
+    gap: 24px; padding-top: 24px; border-top: 1px solid var(--rule);
+  }
+  .fb-label { display: flex; gap: 14px; align-items: baseline; font-size: 11px; letter-spacing: 1.4px; color: var(--ink-3); }
+  .fb-count { color: var(--ink); }
+  .fb-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-size: 11px; letter-spacing: 0.4px; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 999px;
+    border: 1px solid var(--rule);
+    color: var(--ink-2); background: transparent;
+    transition: color 160ms ease, background 160ms ease, border-color 160ms ease;
+  }
+  .chip:hover { border-color: var(--ink-3); color: var(--ink); }
+  .chip.is-on {
+    color: var(--bg);
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+
+  /* ── Project rows ───────────────────────────────────────────────── */
+  .rows { margin-top: 28px; border-bottom: 1px solid var(--rule); }
+  .row { border-top: 1px solid var(--rule); }
+  .row-head {
+    width: 100%; text-align: left;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 2.2fr) minmax(0, 1fr) 64px 24px;
+    gap: 20px; align-items: center;
+    padding: 28px 4px;
+    transition: background 200ms ease;
+  }
+  .row-head:hover { background: var(--bg-2); }
+  .row-num { font-size: 11px; color: var(--ink-3); letter-spacing: 0.6px; }
+  .row-title-col { display: flex; align-items: baseline; gap: 12px; min-width: 0; flex-wrap: wrap; }
+  .row-name { font-size: 26px; font-weight: 400; letter-spacing: -0.6px; }
+  .row-codename { font-size: 12px; color: var(--ink-3); letter-spacing: 0.2px; white-space: nowrap; }
+  .row-role { font-size: 12px; color: var(--ink-2); letter-spacing: 0.3px; }
+  .row-year { font-size: 11px; color: var(--ink-3); text-align: right; letter-spacing: 0.5px; }
+  .row-indicator { color: var(--ink-2); display: inline-flex; justify-content: flex-end; }
+  .row-indicator svg { transition: transform 200ms ease; }
+  .row[data-open="true"] .row-indicator svg { transform: rotate(45deg); }
+
+  .row-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 320ms ease; }
+  .row[data-open="true"] .row-body { grid-template-rows: 1fr; }
+  .row-body-inner { overflow: hidden; }
+  .row-body-pad { padding: 0 4px 36px 64px; }
+  .row-body-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 56px; }
+
+  .row-summary { font-size: 17px; line-height: 1.5; color: var(--ink); margin: 0 0 14px; max-width: 560px; }
+  .row-detail { font-size: 14px; line-height: 1.6; color: var(--ink-2); margin: 0 0 22px; max-width: 560px; }
+  .row-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .row-tag {
+    font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase;
+    padding: 4px 9px; border: 1px solid var(--rule); border-radius: 4px;
+    color: var(--ink-2); background: var(--bg-2);
+  }
+
+  .row-meta { padding-top: 4px; }
+  .meta-line {
+    display: grid; grid-template-columns: 84px 1fr;
+    padding: 8px 0; border-bottom: 1px dashed var(--rule);
+  }
+  .meta-k { font-size: 11px; color: var(--ink-3); letter-spacing: 0.4px; text-transform: uppercase; }
+  .meta-v { font-size: 13px; color: var(--ink-2); }
+
+  .row-ctas { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+  .cta-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 11px 16px;
+    background: var(--ink); color: var(--bg);
+    font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase;
+    border: 1px solid var(--ink); border-radius: 999px;
+    text-decoration: none; cursor: pointer;
+    transition: opacity 160ms ease;
+  }
+  .cta-primary:hover { opacity: 0.88; }
+  .cta-secondary {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 11px 16px;
+    color: var(--ink-2);
+    font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase;
+    border: 1px solid var(--rule); border-radius: 999px;
+    text-decoration: none; background: transparent;
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+  .cta-secondary:hover { color: var(--ink); border-color: var(--ink-3); }
+  .cta-disabled {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 11px 16px;
+    color: var(--ink-3);
+    font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase;
+    border: 1px dashed var(--rule); border-radius: 999px;
+  }
+  .cta-pulse {
+    width: 7px; height: 7px; border-radius: 99px; background: var(--accent);
+    box-shadow: 0 0 0 0 var(--accent-soft);
+    animation: pulse 2s ease-out infinite;
+  }
+
+  .empty { padding: 48px 0; color: var(--ink-3); }
+
+  /* ── About ──────────────────────────────────────────────────────── */
+  .about { padding: 140px 0 80px; border-top: 1px solid var(--rule); margin-top: 96px; }
+  .about-label { font-size: 11px; letter-spacing: 1.4px; color: var(--ink-3); margin-bottom: 32px; }
+  .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; }
+  .about-lead {
+    font-size: 26px; line-height: 1.4; font-weight: 300;
+    color: var(--ink); margin: 0; letter-spacing: -0.4px;
+    text-wrap: balance;
+  }
+  .stat {
+    border-top: 1px solid var(--rule);
+    padding: 16px 0;
+    display: grid; grid-template-columns: 80px 1fr; gap: 24px;
+  }
+  .stat-k { font-size: 11px; color: var(--ink-3); letter-spacing: 0.6px; text-transform: uppercase; padding-top: 3px; }
+  .stat-v { font-size: 16px; color: var(--ink-2); line-height: 1.55; }
+
+  /* ── Modal ──────────────────────────────────────────────────────── */
+  .modal-scrim {
+    position: fixed; inset: 0; background: oklch(0 0 0 / 0.55);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    display: grid; place-items: center; padding: 24px; z-index: 100;
+    animation: fadein 200ms ease;
+  }
+  .modal-card {
+    background: var(--bg); color: var(--ink);
+    border: 1px solid var(--rule); border-radius: 8px;
+    width: min(560px, 100%); overflow: hidden;
+    box-shadow: 0 30px 80px oklch(0 0 0 / 0.25);
+  }
+  .modal-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 20px; border-bottom: 1px solid var(--rule);
+  }
+  .modal-eyebrow { display: flex; align-items: center; gap: 10px; font-size: 11px; letter-spacing: 1.2px; }
+  .modal-status-dot { width: 8px; height: 8px; border-radius: 99px; background: var(--accent); }
+  .modal-status-dot[data-phase="connected"] { background: var(--good); }
+  .modal-status-dot[data-phase="ended"] { background: var(--ink-3); }
+  .modal-close { font-size: 11px; letter-spacing: 1.2px; color: var(--ink-3); }
+  .modal-close:hover { color: var(--ink); }
+
+  .modal-who {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 18px;
+    padding: 22px 20px; align-items: center;
+  }
+  .modal-avatar {
+    width: 64px; height: 64px; border-radius: 99px;
+    background: var(--bg-2); border: 1px solid var(--rule);
+    display: grid; place-items: center;
+  }
+  .waveform { display: flex; align-items: center; gap: 3px; height: 36px; }
+  .waveform span {
+    width: 3px; background: var(--accent); border-radius: 2px;
+    height: 4px;
+  }
+  .waveform[data-active="true"] span { animation: wf 900ms ease-in-out infinite alternate; }
+  .waveform[data-active="true"] span:nth-child(1) { height: 10px; animation-delay: 0ms; }
+  .waveform[data-active="true"] span:nth-child(2) { height: 28px; animation-delay: 80ms; }
+  .waveform[data-active="true"] span:nth-child(3) { height: 30px; animation-delay: 160ms; }
+  .waveform[data-active="true"] span:nth-child(4) { height: 13px; animation-delay: 240ms; }
+  .waveform[data-active="true"] span:nth-child(5) { height: 27px; animation-delay: 320ms; }
+  .waveform[data-active="true"] span:nth-child(6) { height: 31px; animation-delay: 400ms; }
+  .waveform[data-active="true"] span:nth-child(7) { height: 17px; animation-delay: 480ms; }
+
+  .modal-name { font-size: 22px; font-weight: 400; letter-spacing: -0.4px; }
+  .modal-sub { font-size: 11px; color: var(--ink-3); letter-spacing: 0.4px; text-transform: uppercase; margin-top: 2px; }
+  .modal-phone { font-size: 12px; color: var(--ink-2); margin-top: 4px; }
+  .modal-timer { font-size: 14px; color: var(--ink-2); }
+
+  .modal-transcript {
+    height: 240px; overflow-y: auto;
+    padding: 16px 20px;
+    background: var(--bg-2);
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .modal-ringing { display: flex; align-items: center; gap: 10px; color: var(--ink-2); font-size: 12px; letter-spacing: 1.4px; }
+  .ring-dots { display: inline-flex; gap: 4px; }
+  .modal-line {
+    display: grid; grid-template-columns: 70px 1fr; gap: 14px; padding: 8px 0;
+    animation: fadein 240ms ease;
+  }
+  .modal-speaker { font-size: 10px; letter-spacing: 0.8px; padding-top: 4px; color: var(--ink-3); }
+  .modal-speaker[data-who="agent"] { color: var(--accent); }
+  .modal-text { font-size: 14px; line-height: 1.5; color: var(--ink); }
+  .modal-typing { display: inline-flex; gap: 4px; padding: 8px 0 8px 84px; }
+  .blink-dot {
+    width: 5px; height: 5px; border-radius: 99px; background: var(--ink-3);
+    display: inline-block; animation: blink 1.2s infinite ease-in-out;
+  }
+
+  .modal-foot {
+    padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;
+    gap: 16px; flex-wrap: wrap;
+  }
+  .modal-disclaimer { font-size: 10px; color: var(--ink-3); letter-spacing: 0.6px; }
+  .modal-actions { display: flex; gap: 8px; }
+  .modal-action-ghost {
+    padding: 9px 14px; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase;
+    border: 1px solid var(--rule); border-radius: 999px;
+    color: var(--ink-2); text-decoration: none;
+  }
+  .modal-action-ghost:hover { color: var(--ink); border-color: var(--ink-3); }
+  .modal-action-primary {
+    padding: 9px 14px; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase;
+    border: 1px solid var(--ink); border-radius: 999px;
+    background: var(--ink); color: var(--bg);
+    cursor: pointer;
+  }
+
+  /* ── Animations ─────────────────────────────────────────────────── */
+  @keyframes wf {
+    0% { height: 4px; }
+    100% { height: 28px; }
+  }
+  @keyframes signalwave {
+    0%, 100% { height: 3px; opacity: 0.35; }
+    50%      { height: 22px; opacity: 1; }
+  }
+  @keyframes pulse {
+    0%   { opacity: 1; transform: scale(1); }
+    70%  { opacity: 0; transform: scale(2.6); }
+    100% { opacity: 0; transform: scale(2.6); }
+  }
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0.25; }
+    40%           { opacity: 1; }
+  }
+  @keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .blink-dot:nth-child(1) { animation-delay: 0ms; }
+  .blink-dot:nth-child(2) { animation-delay: 150ms; }
+  .blink-dot:nth-child(3) { animation-delay: 300ms; }
+  .ring-dots .blink-dot:nth-child(1) { animation-delay: 0ms; }
+  .ring-dots .blink-dot:nth-child(2) { animation-delay: 200ms; }
+  .ring-dots .blink-dot:nth-child(3) { animation-delay: 400ms; }
+
+  /* ── Responsive ─────────────────────────────────────────────────── */
+  @media (max-width: 880px) {
+    .main, .hdr { padding-left: 28px; padding-right: 28px; }
+    .hdr { flex-direction: column; gap: 18px; align-items: flex-start; }
+    .hdr-nav { padding-top: 0; }
+    .hero { padding: 80px 0 48px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 32px; align-items: start; }
+    .hero-side { max-width: 420px; }
+    .row-head { grid-template-columns: 36px 1fr 24px; gap: 14px; }
+    .row-head .row-role,
+    .row-head .row-year { display: none; }
+    .row-body-pad { padding-left: 50px; }
+    .row-body-grid { grid-template-columns: 1fr; gap: 28px; }
+    .about { padding: 80px 0 48px; margin-top: 64px; }
+    .about-grid { grid-template-columns: 1fr; gap: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hdr">
+    <div class="hdr-left">
+      <div class="hdr-mark mono">UN<span class="dot">.</span></div>
+      <div class="hdr-who">
+        <div class="hdr-name">Umesh Narayanappa</div>
+        <div class="hdr-role mono">Senior Data Engineer · AI Builder</div>
+      </div>
+    </div>
+    <nav class="hdr-nav mono">
+      <button data-jump="work">Work</button>
+      <button data-jump="about">About</button>
+    </nav>
+  </header>
+
+  <main class="main">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-main">
+          <div class="hero-signal" aria-label="Live voice and AI signal">
+            <span class="hero-signal-live" aria-hidden="true"></span>
+            <div class="hero-signal-wave" aria-hidden="true">
+              <span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span>
+              <span style="--i:3"></span><span style="--i:4"></span><span style="--i:5"></span>
+              <span style="--i:6"></span><span style="--i:7"></span><span style="--i:8"></span>
+              <span style="--i:9"></span><span style="--i:10"></span><span style="--i:11"></span>
+              <span style="--i:12"></span><span style="--i:13"></span><span style="--i:14"></span>
+              <span style="--i:15"></span><span style="--i:16"></span><span style="--i:17"></span>
+            </div>
+            <span class="hero-signal-ai" aria-hidden="true"></span>
+          </div>
+          <h1 class="hero-title">Voice agents and AI apps, built like infrastructure.</h1>
+          <p class="hero-lede">
+            I design and ship production AI systems — phone-based voice agents,
+            generative tools, and the data plumbing that makes them reliable.
+          </p>
+          <div class="hero-proof mono">
+            <span>LIVE IN PRODUCTION</span>
+            <span class="hero-proof-sep" aria-hidden="true">·</span>
+            <span>3 PHONE LINES</span>
+            <span class="hero-proof-sep" aria-hidden="true">·</span>
+            <span>24/7</span>
+          </div>
+          <div class="hero-ctas">
+            <button class="cta-primary mono" id="hero-call" type="button">
+              <span class="cta-pulse"></span>Hear a call
+            </button>
+            <button class="cta-secondary mono" data-jump="work" type="button">See the work ↓</button>
+          </div>
+        </div>
+
+        <aside class="hero-side" aria-label="Live voice agents">
+          <div class="hero-side-head mono">
+            <span class="hero-side-status">
+              <span class="hero-side-dot"></span>
+              LIVE
+            </span>
+            <span>VOICE AGENTS</span>
+          </div>
+          <div class="hero-side-body" id="hero-side-body">
+            <div class="hero-side-row">
+              <div class="hero-side-avatar">
+                <div class="waveform" data-active="true">
+                  <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+              <div class="hero-side-id">
+                <div class="hero-side-name" id="hs-name">Zara</div>
+                <div class="hero-side-meta mono" id="hs-meta">FRUITION MKE · AI RECEPTIONIST</div>
+              </div>
+            </div>
+            <div class="hero-side-quote" id="hs-quote">
+              "Fruition MKE, this is Zara — how can I help?"
+            </div>
+          </div>
+          <div class="hero-side-foot mono">
+            <span id="hs-loc">MILWAUKEE, WI</span>
+            <span id="hs-counter">01 / 03</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="fb">
+        <div class="fb-label mono">
+          <span>SELECTED WORK</span>
+          <span class="fb-count" id="fb-count">00</span>
+        </div>
+        <div class="fb-chips" id="fb-chips"></div>
+      </div>
+      <div class="rows" id="rows"></div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="about-label mono">ABOUT</div>
+      <div class="about-grid">
+        <p class="about-lead">
+          I build voice agents and AI applications that hold up under
+          real-world load — restaurants taking orders at 7pm, city offices
+          surveying thousands of residents, coworking spaces fielding
+          calls at 2am.
+        </p>
+        <div>
+          <div class="stat">
+            <span class="stat-k mono">Day</span>
+            <span class="stat-v">Senior Data Engineer — credit card data platforms at a Fortune 100 bank.</span>
+          </div>
+          <div class="stat">
+            <span class="stat-k mono">Night</span>
+            <span class="stat-v">Voice agents, image-gen apps, and the orchestration that keeps them up.</span>
+          </div>
+          <div class="stat">
+            <span class="stat-k mono">Stack</span>
+            <span class="stat-v">Retell AI, Claude, OpenAI, Gemini, ElevenLabs, Cartesia, Sarvam AI, Next.js, Supabase, Python.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+</div>
+
+<script>
+  // ── Data ──────────────────────────────────────────────────────────
+  const PROJECTS = [
+    {
+      id: "fruition", num: "01", name: "Fruition MKE", codename: "Zara",
+      kind: "voice", role: "AI Receptionist", year: "2026", location: "Milwaukee, WI",
+      summary: "Phone-based receptionist for a coworking space. Answers room availability, handles member inquiries, and routes after-hours calls.",
+      detail: "Zara fields inbound calls 24/7, checks live room availability, qualifies prospective members, and books tours. Designed to sound like a calm front-desk lead, not a phone tree.",
+      tags: ["Retell AI", "Claude API", "ElevenLabs", "Next.js"],
+      href: "https://fruition-mke.vercel.app/",
+      phone: "+1 (414) 626 — 0319",
+    },
+    {
+      id: "franklin", num: "02", name: "Franklin CHA", codename: "Community Health",
+      kind: "voice", role: "Outbound Survey Agent", year: "2026", location: "Franklin, WI",
+      summary: "Outbound voice AI conducting community health assessment surveys for a city public-health office.",
+      detail: "Places thousands of outbound calls, collects structured survey responses with branching logic, and aggregates anonymized results into a dashboard for the city's epidemiology team.",
+      tags: ["Retell AI", "Claude API", "Supabase", "Next.js"],
+      href: "https://franklin-cha.vercel.app/",
+      phone: "+1 (414) 509 — 0699",
+    },
+    {
+      id: "ordra", num: "03", name: "Ordra", codename: "Kabab House",
+      kind: "voice", role: "Voice Ordering Agent", year: "2026", location: "Milwaukee, WI",
+      summary: "Voice agent that takes phone orders for a restaurant — menu questions, dietary swaps, pickup timing.",
+      detail: "Trained on the full menu and prep constraints. Handles modifications, allergens, and pickup windows; pushes orders to the POS via webhook. Built on Retell AI + Claude + ElevenLabs.",
+      tags: ["Retell AI", "Claude API", "ElevenLabs", "Webhooks"],
+      href: "https://retellagent-kababhouse.vercel.app/",
+      phone: "+1 (262) 233 — 1917",
+    },
+    {
+      id: "glint", num: "04", name: "Glint", codename: "Restaurant Autopilot",
+      kind: "image", typeLabel: "Social-media autopilot",
+      role: "Social Media AI", year: "2026", location: "Oak Creek, WI",
+      summary: "Multi-tenant social-media autopilot for restaurants — drafts a week of posts, runs the approval workflow, schedules, and tracks analytics. Live with Kabab House.",
+      detail: "Tagline: \"Writes the week. You hit post.\" Generates week-ahead content, the owner approves what ships, the platform schedules and posts. Per-tenant analytics dashboard tracks performance. Built by haagLABS for restaurant operators who don't have time to feed the social-media monster.",
+      tags: ["Content AI", "Multi-tenant", "Next.js"],
+      href: "https://kababhouse-studio.vercel.app/",
+    },
+    {
+      id: "pinnacle", num: "05", name: "Pinnacle", codename: "Creative Studio",
+      kind: "image", typeLabel: "Marketing creative AI",
+      role: "Marketing Creative AI", year: "2026", location: "—",
+      summary: "AI-powered marketing creative generation for credit-card campaigns. Takes a campaign brief and an audience segment, returns on-brand creative ready to ship.",
+      detail: "Built for marketing teams to spin up audience-specific creative without art direction per asset. Audience presets cover students (18–24), SMB entrepreneurs (28–45), and frequent travelers (30–55). Tagline: \"Reach your peak.\"",
+      tags: ["AI Creative", "Image Gen", "Next.js"],
+      href: "https://pinnacle-rose.vercel.app/",
+    },
+  ];
+
+  const ALL_TAGS = ["All", "Voice", "Image", "Retell AI", "Claude API", "ElevenLabs", "Next.js", "Supabase"];
+
+  const TRANSCRIPTS = {
+    fruition: [
+      ["agent", "Fruition MKE, this is Zara — how can I help?"],
+      ["user",  "Hi, do you have a meeting room available this Thursday afternoon?"],
+      ["agent", "Let me check. We have the Lakefront room open from 1 to 4, and the Studio from 2 to 6. Either work?"],
+      ["user",  "The Studio sounds good. Can you hold it for me?"],
+      ["agent", "Done — I've put a soft hold under your name. I'll text the booking link to confirm."],
+    ],
+    franklin: [
+      ["agent", "Hi, this is Franklin's Community Health line calling for the 2026 health survey. Do you have three minutes?"],
+      ["user",  "Sure, go ahead."],
+      ["agent", "Thank you. First — on a scale of 1 to 5, how would you rate your access to primary care?"],
+      ["user",  "Probably a 4."],
+      ["agent", "Got it. And have you had a routine checkup in the past twelve months?"],
+    ],
+    ordra: [
+      ["agent", "Kabab House, what can I get started for you?"],
+      ["user",  "Two chicken shawarma plates, one with no onions."],
+      ["agent", "Two chicken shawarma plates, hold the onions on one. Rice or salad on the side?"],
+      ["user",  "Rice, please. And how long for pickup?"],
+      ["agent", "Twenty minutes. Total is $27.40 — name for the order?"],
+    ],
+  };
+  const FALLBACK_TRANSCRIPT = [
+    ["agent", "Hello — how can I help today?"],
+    ["user",  "Just exploring the demo."],
+  ];
+
+  // ── State ─────────────────────────────────────────────────────────
+  const state = {
+    filter: "All",
+    openId: "fruition",
+  };
+
+  // ── Helpers ───────────────────────────────────────────────────────
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[c]);
+
+  function filtered() {
+    if (state.filter === "All") return PROJECTS;
+    if (state.filter === "Voice") return PROJECTS.filter((p) => p.kind === "voice");
+    if (state.filter === "Image") return PROJECTS.filter((p) => p.kind === "image");
+    return PROJECTS.filter((p) => p.tags.includes(state.filter));
+  }
+
+  // ── Render: chips ─────────────────────────────────────────────────
+  function renderChips() {
+    const host = $("#fb-chips");
+    host.innerHTML = ALL_TAGS.map((t) =>
+      `<button class="chip mono${t === state.filter ? " is-on" : ""}" data-tag="${esc(t)}">${esc(t)}</button>`
+    ).join("");
+    host.onclick = (e) => {
+      const btn = e.target.closest(".chip");
+      if (!btn) return;
+      state.filter = btn.dataset.tag;
+      renderChips();
+      renderRows();
+    };
+  }
+
+  // ── Render: rows ──────────────────────────────────────────────────
+  function metaLine(k, v, mono) {
+    return `
+      <div class="meta-line">
+        <span class="meta-k mono">${esc(k)}</span>
+        <span class="meta-v${mono ? " mono" : ""}">${esc(v)}</span>
+      </div>`;
+  }
+
+  function rowHtml(p) {
+    const isOpen = state.openId === p.id;
+    const ctas = [];
+    if (p.kind === "voice") {
+      ctas.push(`<button class="cta-primary mono" data-call="${esc(p.id)}">
+        <span class="cta-pulse"></span>Call to talk
+      </button>`);
+    } else if (p.kind === "image" && !p.pending) {
+      ctas.push(`<a class="cta-primary mono" href="${esc(p.href)}" target="_blank" rel="noreferrer" data-stop>Open app →</a>`);
+    } else if (p.kind === "image" && p.pending) {
+      ctas.push(`<span class="cta-disabled mono">Coming soon</span>`);
+    }
+    if (!p.pending) {
+      ctas.push(`<a class="cta-secondary mono" href="${esc(p.href)}" target="_blank" rel="noreferrer" data-stop>View live ↗</a>`);
+    }
+
+    const tagsHtml = p.tags.map((t) => `<span class="row-tag mono">${esc(t)}</span>`).join("");
+    const phoneLine = p.phone ? metaLine("Line", p.phone, true) : "";
+
+    return `
+      <article class="row" data-id="${esc(p.id)}" data-open="${isOpen}">
+        <button class="row-head" type="button" aria-expanded="${isOpen}">
+          <span class="row-num mono">${esc(p.num)}</span>
+          <span class="row-title-col">
+            <span class="row-name">${esc(p.name)}</span>
+            <span class="row-codename mono">/ ${esc(p.codename)}</span>
+          </span>
+          <span class="row-role mono">${esc(p.role)}</span>
+          <span class="row-year mono">${esc(p.year)}</span>
+          <span class="row-indicator" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14">
+              <line x1="7" y1="2" x2="7" y2="12" stroke="currentColor" stroke-width="1" />
+              <line x1="2" y1="7" x2="12" y2="7" stroke="currentColor" stroke-width="1" />
+            </svg>
+          </span>
+        </button>
+        <div class="row-body">
+          <div class="row-body-inner">
+            <div class="row-body-pad">
+              <div class="row-body-grid">
+                <div>
+                  <p class="row-summary">${esc(p.summary)}</p>
+                  <p class="row-detail">${esc(p.detail)}</p>
+                  <div class="row-tags">${tagsHtml}</div>
+                </div>
+                <div class="row-meta">
+                  ${metaLine("Type", p.typeLabel || (p.kind === "voice" ? "Voice agent" : "Image generator"))}
+                  ${metaLine("Status", p.pending ? "Coming soon" : "Live")}
+                  ${metaLine("Location", p.location)}
+                  ${phoneLine}
+                  <div class="row-ctas">${ctas.join("")}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>`;
+  }
+
+  function renderRows() {
+    const list = filtered();
+    $("#fb-count").textContent = String(list.length).padStart(2, "0");
+    const host = $("#rows");
+    if (list.length === 0) {
+      host.innerHTML = `<div class="empty mono">— no projects match this filter</div>`;
+      return;
+    }
+    host.innerHTML = list.map(rowHtml).join("");
+    wireRows();
+  }
+
+  function wireRows() {
+    $$("#rows .row").forEach((row) => {
+      const id = row.dataset.id;
+      const head = $(".row-head", row);
+
+      head.addEventListener("click", () => {
+        state.openId = state.openId === id ? null : id;
+        // Apply just to data attributes — avoid full re-render to preserve hover state.
+        $$("#rows .row").forEach((r) => {
+          const open = r.dataset.id === state.openId;
+          r.dataset.open = String(open);
+          $(".row-head", r).setAttribute("aria-expanded", String(open));
+        });
+      });
+
+      // Hover-to-peek: temporarily open this row while hovered.
+      let hoverPrev = null;
+      row.addEventListener("mouseenter", () => {
+        if (row.dataset.open === "true") return;
+        hoverPrev = row.dataset.open;
+        row.dataset.open = "true";
+      });
+      row.addEventListener("mouseleave", () => {
+        if (state.openId === id) return; // genuinely open via click
+        if (hoverPrev !== null) {
+          row.dataset.open = hoverPrev;
+          hoverPrev = null;
+        } else {
+          row.dataset.open = "false";
+        }
+      });
+
+      // Call modal trigger.
+      $$("[data-call]", row).forEach((b) => {
+        b.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const p = PROJECTS.find((x) => x.id === b.dataset.call);
+          if (p) openCall(p);
+        });
+      });
+
+      // Don't toggle row when clicking external links.
+      $$("[data-stop]", row).forEach((a) => {
+        a.addEventListener("click", (e) => e.stopPropagation());
+      });
+    });
+  }
+
+  // ── Smooth-scroll nav ────────────────────────────────────────────
+  $$("[data-jump]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const el = document.getElementById(btn.dataset.jump);
+      if (el) window.scrollTo({ top: el.offsetTop - 24, behavior: "smooth" });
+    });
+  });
+
+  // ── Hero "Hear a call" → opens Fruition modal ────────────────────
+  $("#hero-call").addEventListener("click", () => {
+    const fruition = PROJECTS.find((p) => p.id === "fruition");
+    if (fruition) openCall(fruition);
+  });
+
+  // ── Hero side panel: cycle through voice agents ──────────────────
+  (function initHeroCycler() {
+    const voiceAgents = PROJECTS.filter((p) => p.kind === "voice");
+    if (voiceAgents.length === 0) return;
+
+    const $body = $("#hero-side-body");
+    const $name = $("#hs-name");
+    const $meta = $("#hs-meta");
+    const $quote = $("#hs-quote");
+    const $loc = $("#hs-loc");
+    const $counter = $("#hs-counter");
+
+    const firstAgentLine = (id) => {
+      const t = TRANSCRIPTS[id] || [];
+      const line = t.find(([who]) => who === "agent");
+      return line ? line[1] : "";
+    };
+
+    const total = String(voiceAgents.length).padStart(2, "0");
+    let idx = 0;
+
+    const apply = (i) => {
+      const p = voiceAgents[i];
+      $name.textContent = p.codename;
+      $meta.textContent = `${p.name.toUpperCase()} · ${p.role.toUpperCase()}`;
+      $quote.textContent = `“${firstAgentLine(p.id)}”`;
+      $loc.textContent = (p.location || "").toUpperCase();
+      $counter.textContent = `${String(i + 1).padStart(2, "0")} / ${total}`;
+    };
+
+    apply(idx);
+
+    if (voiceAgents.length < 2) return;
+
+    setInterval(() => {
+      $body.dataset.fading = "true";
+      setTimeout(() => {
+        idx = (idx + 1) % voiceAgents.length;
+        apply(idx);
+        $body.dataset.fading = "false";
+      }, 320);
+    }, 4000);
+  })();
+
+  // ── Call modal ────────────────────────────────────────────────────
+  let modalState = null;
+
+  function openCall(project) {
+    closeCall(); // ensure no duplicate
+
+    const transcript = TRANSCRIPTS[project.id] || FALLBACK_TRANSCRIPT;
+
+    const scrim = document.createElement("div");
+    scrim.className = "modal-scrim";
+    scrim.innerHTML = `
+      <div class="modal-card" role="dialog" aria-modal="true" aria-label="Call with ${esc(project.codename)}">
+        <div class="modal-head">
+          <div class="modal-eyebrow mono">
+            <span class="modal-status-dot" data-phase="ringing"></span>
+            <span class="modal-phase">DIALING</span>
+          </div>
+          <button class="modal-close mono" type="button">CLOSE  ×</button>
+        </div>
+        <div class="modal-who">
+          <div class="modal-avatar">
+            <div class="waveform" data-active="false">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div>
+            <div class="modal-name">${esc(project.codename)}</div>
+            <div class="modal-sub mono">${esc(project.name)} · ${esc(project.role)}</div>
+            <div class="modal-phone mono">${esc(project.phone || "")}</div>
+          </div>
+          <div class="modal-timer mono">00:00</div>
+        </div>
+        <div class="modal-transcript">
+          <div class="modal-ringing mono">
+            <span>RINGING</span>
+            <span class="ring-dots">
+              <span class="blink-dot"></span><span class="blink-dot"></span><span class="blink-dot"></span>
+            </span>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <div class="modal-disclaimer mono">
+            DEMO TRANSCRIPT — for the live agent, deploy via ${esc(project.tags[0])}
+          </div>
+          <div class="modal-actions">
+            <a class="modal-action-ghost mono" href="${esc(project.href)}" target="_blank" rel="noreferrer">Open project ↗</a>
+            <button class="modal-action-primary mono" type="button">End call</button>
+          </div>
+        </div>
+      </div>`;
+
+    document.body.appendChild(scrim);
+
+    const $card = $(".modal-card", scrim);
+    const $statusDot = $(".modal-status-dot", scrim);
+    const $phaseLabel = $(".modal-phase", scrim);
+    const $waveform = $(".waveform", scrim);
+    const $timer = $(".modal-timer", scrim);
+    const $transcript = $(".modal-transcript", scrim);
+    const closeButtons = [$(".modal-close", scrim), $(".modal-action-primary", scrim)];
+
+    const fmt = (s) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+
+    let phase = "ringing";
+    let seconds = 0;
+    let visibleLines = 0;
+    let timerInterval = null;
+    let lineTimeout = null;
+
+    const renderLines = () => {
+      const lines = transcript.slice(0, visibleLines).map(([who, text]) =>
+        `<div class="modal-line">
+          <span class="modal-speaker mono" data-who="${esc(who)}">${who === "agent" ? esc(project.codename.toUpperCase()) : "YOU"}</span>
+          <span class="modal-text">${esc(text)}</span>
+        </div>`
+      ).join("");
+      const typing = (phase === "connected" && visibleLines < transcript.length)
+        ? `<div class="modal-typing mono">
+             <span class="blink-dot"></span><span class="blink-dot"></span><span class="blink-dot"></span>
+           </div>`
+        : "";
+      $transcript.innerHTML = lines + typing;
+      $transcript.scrollTop = $transcript.scrollHeight;
+    };
+
+    const tickLine = () => {
+      if (visibleLines >= transcript.length) return;
+      lineTimeout = setTimeout(() => {
+        visibleLines++;
+        renderLines();
+        tickLine();
+      }, 1400);
+    };
+
+    setTimeout(() => {
+      if (modalState !== state) return; // closed already
+      phase = "connected";
+      $statusDot.dataset.phase = "connected";
+      $phaseLabel.textContent = "CONNECTED";
+      $waveform.dataset.active = "true";
+      timerInterval = setInterval(() => {
+        seconds++;
+        $timer.textContent = fmt(seconds);
+      }, 1000);
+      renderLines();
+      tickLine();
+    }, 1800);
+
+    const close = () => {
+      clearInterval(timerInterval);
+      clearTimeout(lineTimeout);
+      scrim.remove();
+      modalState = null;
+    };
+
+    closeButtons.forEach((b) => b.addEventListener("click", close));
+    scrim.addEventListener("click", (e) => { if (e.target === scrim) close(); });
+    $card.addEventListener("click", (e) => e.stopPropagation());
+
+    const onKey = (e) => {
+      if (e.key === "Escape") { close(); document.removeEventListener("keydown", onKey); }
+    };
+    document.addEventListener("keydown", onKey);
+
+    modalState = state;
+  }
+
+  function closeCall() {
+    document.querySelectorAll(".modal-scrim").forEach((n) => n.remove());
+    modalState = null;
+  }
+
+  // ── Init ──────────────────────────────────────────────────────────
+  renderChips();
+  renderRows();
+</script>
+</body>
+</html>
