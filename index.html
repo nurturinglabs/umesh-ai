@@ -695,7 +695,7 @@
     } else if (p.kind === "image" && p.pending) {
       ctas.push(`<span class="cta-disabled mono">Coming soon</span>`);
     }
-    if (!p.pending) {
+    if (!p.pending && p.kind === "voice") {
       ctas.push(`<a class="cta-secondary mono" href="${esc(p.href)}" target="_blank" rel="noreferrer" data-stop>View live ↗</a>`);
     }
 
