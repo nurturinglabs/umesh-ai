@@ -599,13 +599,13 @@
       href: "https://kababhouse-studio.vercel.app/",
     },
     {
-      id: "pinnacle", num: "05", name: "Pinnacle", codename: "Creative Studio",
-      kind: "image", typeLabel: "Marketing creative AI",
-      role: "Marketing Creative AI", year: "2026", location: "—",
-      summary: "AI-powered marketing creative generation for credit-card campaigns. Takes a campaign brief and an audience segment, returns on-brand creative ready to ship.",
-      detail: "Built for marketing teams to spin up audience-specific creative without art direction per asset. Audience presets cover students (18–24), SMB entrepreneurs (28–45), and frequent travelers (30–55). Tagline: \"Reach your peak.\"",
-      tags: ["AI Creative", "Image Gen", "Next.js"],
-      href: "https://pinnacle-rose.vercel.app/",
+      id: "meridian", num: "05", name: "Meridian", codename: "HR Copilot",
+      kind: "image", typeLabel: "Governed enterprise RAG",
+      role: "HR Knowledge Copilot", year: "2026", location: "Milwaukee, WI",
+      summary: "Persona-aware HR Q&A copilot with RBAC enforced at the data layer. Every retrieval is auditable, deprecated content stays out, and PII is redacted at query time.",
+      detail: "Single-shot RAG over a corpus of HR policies and SOPs. The pipeline embeds each query with OpenAI, runs three Postgres RPCs in parallel to compute both what was retrieved and what was filtered, redacts PII inline, generates with Claude Sonnet, and scores faithfulness on the answer. RLS enforces persona tiers in SQL — the same query that does vector similarity also enforces governance.",
+      tags: ["RAG", "Claude API", "Supabase", "Next.js"],
+      href: "https://meridian-hr-copilot.vercel.app/",
     },
   ];
 
