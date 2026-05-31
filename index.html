@@ -572,7 +572,7 @@
           <div class="hero-proof mono">
             <span>8 LIVE</span>
             <span class="hero-proof-sep" aria-hidden="true">·</span>
-            <span>4 PHONE LINES</span>
+            <span>3 PHONE LINES</span>
             <span class="hero-proof-sep" aria-hidden="true">·</span>
             <span>3 RAG CORPORA</span>
             <span class="hero-proof-sep" aria-hidden="true">·</span>
@@ -642,7 +642,7 @@
           <div class="about-metric-l mono">Systems live</div>
         </div>
         <div class="about-metric">
-          <div class="about-metric-n">4</div>
+          <div class="about-metric-n">3</div>
           <div class="about-metric-l mono">Phone lines</div>
         </div>
         <div class="about-metric">
@@ -708,19 +708,9 @@
       href: "https://retellagent-kababhouse.vercel.app/",
       phone: "+1 (262) 233 — 1917",
     },
-    {
-      id: "meddo", num: "04", category: "voice",
-      name: "Meddo", codename: "Clinical Copilot",
-      role: "Clinical Voice AI", year: "2026", location: "India",
-      summary: "Voice-dictated SOAP notes, AI patient summaries, and automated follow-ups for physicians — built for the Indian clinic market.",
-      detail: "Voice-first clinical assistant aimed at reducing physician documentation burden. ElevenLabs powers the voice capture and natural follow-up generation; an LLM layer turns dictation into structured SOAP notes and surfaces pattern alerts across patient history. Designed for the workflow realities of Ayushman Bharat Digital Mission and small-clinic IT.",
-      tags: ["ElevenLabs", "Claude API", "Next.js", "Healthcare"],
-      href: "https://elevenlabsagent-meddo.vercel.app/",
-    },
-
     // ── Knowledge & RAG ─────────────────────────────────────────────
     {
-      id: "meridian", num: "05", category: "rag",
+      id: "meridian", num: "04", category: "rag",
       name: "Meridian", codename: "HR Copilot",
       typeLabel: "Governed enterprise RAG",
       role: "HR Knowledge Copilot", year: "2026", location: "Milwaukee, WI",
@@ -731,7 +721,7 @@
       sideQuote: `"What's our PTO carryover policy?"  →  cited in HR Handbook p.12`,
     },
     {
-      id: "supplylens", num: "06", category: "rag",
+      id: "supplylens", num: "05", category: "rag",
       name: "SupplyLens", codename: "Supplier Intelligence",
       typeLabel: "Procurement RAG",
       role: "Supplier Q&A Copilot", year: "2026", location: "Milwaukee, WI",
@@ -742,7 +732,7 @@
       sideQuote: `"What's our liability cap with Vendor X?"  →  cited in MSA §4.2`,
     },
     {
-      id: "bruno", num: "07", category: "rag",
+      id: "bruno", num: "06", category: "rag",
       name: "Bruno", codename: "AI Product Support",
       typeLabel: "Product manual RAG",
       role: "AI Product Support Agent", year: "2026", location: "Oconomowoc, WI",
@@ -755,7 +745,7 @@
 
     // ── Generative apps ─────────────────────────────────────────────
     {
-      id: "glint", num: "08", category: "generative",
+      id: "glint", num: "07", category: "generative",
       name: "Glint", codename: "Restaurant Autopilot",
       typeLabel: "Multi-tenant content automation",
       role: "Social Media AI", year: "2026", location: "Oak Creek, WI",
@@ -765,12 +755,23 @@
       href: "https://kababhouse-studio.vercel.app/",
       sideQuote: `"Writes the week. You hit post."`,
     },
+    {
+      id: "meddo", num: "08", category: "generative",
+      name: "Meddo", codename: "Clinical Superpower",
+      typeLabel: "Vertical AI for clinics",
+      role: "AI Clinical Assistant", year: "2026", location: "India",
+      summary: "The AI clinical assistant that gives doctors a superpower — voice-dictated notes, AI patient summaries, pattern detection, and one-click follow-ups, all from a single screen.",
+      detail: "Built for physicians running medical clinics. Voice dictation captures encounters in seconds; an LLM layer turns dictation into structured notes, generates patient summaries, surfaces clinical patterns across history, and drafts follow-up messages — all triggered from a single workspace. Designed for the workflow realities of Ayushman Bharat Digital Mission and small-clinic IT in India.",
+      tags: ["Claude API", "ElevenLabs", "Next.js", "Healthcare"],
+      href: "https://elevenlabsagent-meddo.vercel.app/",
+      sideQuote: `"The AI clinical assistant that gives doctors a superpower."`,
+    },
   ];
 
   const CATEGORIES = [
     { key: "voice",      label: "Voice Agents",     blurb: "Phone-based AI that picks up, listens, and acts." },
     { key: "rag",        label: "Knowledge & RAG",  blurb: "Grounded retrieval copilots with citation-level traceability." },
-    { key: "generative", label: "Generative Apps",  blurb: "Content + workflow automation for operators." },
+    { key: "generative", label: "Generative & Workflow Apps", blurb: "Vertical AI tools that give operators a superpower." },
   ];
 
   const ALL_TAGS = ["All", "RAG", "Claude API", "OpenAI", "Retell AI", "ElevenLabs", "Supabase", "Next.js"];
