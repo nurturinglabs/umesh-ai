@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Umesh Narayanappa — AI Builder</title>
-<meta name="description" content="Voice agents and AI apps, built like infrastructure." />
+<title>Umesh Narayanappa — AI Systems Builder</title>
+<meta name="description" content="Production AI systems — voice agents, retrieval copilots, and generative apps. Senior Data Engineer who ships." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -115,12 +115,24 @@
     font-family: 'Inter Tight', sans-serif;
     font-size: clamp(40px, 5.4vw, 64px);
     line-height: 1.04; letter-spacing: -1.8px; font-weight: 400;
-    margin: 0 0 28px;
+    margin: 0 0 18px;
     text-wrap: balance;
   }
+  .hero-title-sep {
+    color: var(--ink-3);
+    margin: 0 4px;
+  }
+  .hero-rotator {
+    color: var(--accent);
+    display: block;
+    transition: opacity 280ms ease, transform 280ms ease;
+  }
+  .hero-rotator[data-fading="true"] {
+    opacity: 0; transform: translateY(-4px);
+  }
   .hero-lede {
-    font-size: 18px; line-height: 1.55; color: var(--ink-2);
-    margin: 0; text-wrap: pretty;
+    font-size: 22px; line-height: 1.4; color: var(--ink-2);
+    margin: 0; font-weight: 400; letter-spacing: -0.4px;
   }
   .hero-proof {
     display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
@@ -151,14 +163,43 @@
     transition: opacity 320ms ease;
   }
   .hero-side-body[data-fading="true"] { opacity: 0; }
-  .hero-side-row { display: grid; grid-template-columns: 48px 1fr; gap: 14px; align-items: center; }
+  .hero-side-row { display: grid; grid-template-columns: 84px 1fr; gap: 18px; align-items: center; }
   .hero-side-avatar {
-    width: 48px; height: 48px; border-radius: 99px;
+    width: 84px; height: 84px; border-radius: 999px;
     background: var(--bg); border: 1px solid var(--rule);
     display: grid; place-items: center;
   }
-  .hero-side-avatar .waveform { gap: 2px; height: 28px; }
-  .hero-side-avatar .waveform span { width: 2px; }
+  .hero-side-avatar .waveform { gap: 3px; height: 48px; }
+  .hero-side-avatar .waveform span { width: 3px; }
+
+  /* RAG avatar: stacked document lines + accent citation underline */
+  .doc-stack {
+    display: flex; flex-direction: column; gap: 5px; align-items: flex-start;
+    width: 48px;
+  }
+  .doc-stack span {
+    height: 3px; border-radius: 2px;
+    background: var(--ink-2);
+  }
+  .doc-stack span:nth-child(1) { width: 100%; }
+  .doc-stack span:nth-child(2) { width: 80%; }
+  .doc-stack span:nth-child(3) { width: 90%; }
+  .doc-stack .doc-underline {
+    width: 45%; margin-top: 4px;
+    background: var(--accent);
+    height: 3px; border-radius: 2px;
+  }
+
+  /* Generative avatar: 2x2 content tiles, one accented */
+  .gen-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5px;
+    width: 44px; height: 44px;
+  }
+  .gen-grid span {
+    background: var(--ink-2);
+    border-radius: 3px;
+  }
+  .gen-grid span:nth-child(1) { background: var(--accent); }
   .hero-side-name { font-size: 18px; font-weight: 400; letter-spacing: -0.3px; }
   .hero-side-meta {
     font-size: 10px; color: var(--ink-3); letter-spacing: 0.6px;
@@ -198,8 +239,28 @@
     border-color: var(--ink);
   }
 
+  /* ── Category sections ──────────────────────────────────────────── */
+  .rows { margin-top: 28px; }
+  .cat { margin-top: 48px; }
+  .cat:first-child { margin-top: 28px; }
+  .cat-head {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 24px;
+    padding-bottom: 14px;
+  }
+  .cat-head-line { display: flex; align-items: baseline; gap: 12px; }
+  .cat-label {
+    font-size: 11px; letter-spacing: 1.6px; color: var(--ink);
+    text-transform: uppercase;
+  }
+  .cat-count {
+    font-size: 11px; color: var(--ink-3); letter-spacing: 0.6px;
+  }
+  .cat-blurb {
+    font-size: 12px; color: var(--ink-3); text-align: right; max-width: 360px;
+  }
+  .cat-rows { border-bottom: 1px solid var(--rule); }
+
   /* ── Project rows ───────────────────────────────────────────────── */
-  .rows { margin-top: 28px; border-bottom: 1px solid var(--rule); }
   .row { border-top: 1px solid var(--rule); }
   .row-head {
     width: 100%; text-align: left;
@@ -280,21 +341,56 @@
   .empty { padding: 48px 0; color: var(--ink-3); }
 
   /* ── About ──────────────────────────────────────────────────────── */
-  .about { padding: 140px 0 80px; border-top: 1px solid var(--rule); margin-top: 96px; }
-  .about-label { font-size: 11px; letter-spacing: 1.4px; color: var(--ink-3); margin-bottom: 32px; }
-  .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; }
+  .about { padding: 56px 0 80px; border-top: 1px solid var(--rule); margin-top: 96px; scroll-margin-top: 24px; }
+  .about-label { font-size: 11px; letter-spacing: 1.4px; color: var(--ink-3); margin-bottom: 28px; }
   .about-lead {
-    font-size: 26px; line-height: 1.4; font-weight: 300;
-    color: var(--ink); margin: 0; letter-spacing: -0.4px;
-    text-wrap: balance;
+    font-size: clamp(28px, 3.4vw, 38px);
+    line-height: 1.15; font-weight: 400;
+    color: var(--ink); margin: 0 0 40px;
+    letter-spacing: -1px; text-wrap: balance;
+    max-width: 760px;
   }
+  .about-lead .ink-accent { color: var(--accent); }
+
+  .about-metrics {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px; margin-bottom: 48px;
+  }
+  .about-metric {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 18px 18px 16px;
+    background: var(--bg);
+    transition: border-color 200ms ease;
+  }
+  .about-metric:hover { border-color: var(--ink-3); }
+  .about-metric-n {
+    font-size: 30px; font-weight: 400;
+    letter-spacing: -0.8px; line-height: 1;
+    color: var(--ink);
+  }
+  .about-metric-l {
+    font-size: 10px; color: var(--ink-3);
+    letter-spacing: 1.2px; text-transform: uppercase;
+    margin-top: 10px;
+  }
+
+  .about-facts { margin: 0; }
   .stat {
     border-top: 1px solid var(--rule);
-    padding: 16px 0;
-    display: grid; grid-template-columns: 80px 1fr; gap: 24px;
+    padding: 14px 0;
+    display: grid; grid-template-columns: 70px 1fr; gap: 24px;
+    align-items: baseline;
   }
-  .stat-k { font-size: 11px; color: var(--ink-3); letter-spacing: 0.6px; text-transform: uppercase; padding-top: 3px; }
-  .stat-v { font-size: 16px; color: var(--ink-2); line-height: 1.55; }
+  .stat:last-child { border-bottom: 1px solid var(--rule); }
+  .stat-k { font-size: 11px; color: var(--ink-3); letter-spacing: 0.8px; text-transform: uppercase; }
+  .stat-v { font-size: 15px; color: var(--ink-2); line-height: 1.5; }
+
+  .about-footer {
+    margin-top: 32px;
+    font-size: 13px; color: var(--ink-3); line-height: 1.5;
+  }
+  .about-footer strong { color: var(--ink); font-weight: 400; }
 
   /* ── Modal ──────────────────────────────────────────────────────── */
   .modal-scrim {
@@ -430,8 +526,9 @@
     .row-head .row-year { display: none; }
     .row-body-pad { padding-left: 50px; }
     .row-body-grid { grid-template-columns: 1fr; gap: 28px; }
-    .about { padding: 80px 0 48px; margin-top: 64px; }
-    .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    .about { padding: 48px 0 48px; margin-top: 64px; }
+    .about-metrics { grid-template-columns: repeat(2, 1fr); }
+    .about-lead { font-size: 26px; letter-spacing: -0.6px; }
   }
 </style>
 </head>
@@ -467,37 +564,39 @@
             </div>
             <span class="hero-signal-ai" aria-hidden="true"></span>
           </div>
-          <h1 class="hero-title">Voice agents and AI apps, built like infrastructure.</h1>
-          <p class="hero-lede">
-            I design and ship production AI systems — phone-based voice agents,
-            generative tools, and the data plumbing that makes them reliable.
-          </p>
+          <h1 class="hero-title">
+            AI Apps <span class="hero-title-sep" aria-hidden="true">—</span>
+            <span class="hero-rotator" id="hero-rotator">Voice Agents</span>
+          </h1>
+          <p class="hero-lede">Built to ship.</p>
           <div class="hero-proof mono">
-            <span>LIVE IN PRODUCTION</span>
+            <span>8 LIVE</span>
             <span class="hero-proof-sep" aria-hidden="true">·</span>
-            <span>3 PHONE LINES</span>
+            <span>4 PHONE LINES</span>
+            <span class="hero-proof-sep" aria-hidden="true">·</span>
+            <span>3 RAG CORPORA</span>
             <span class="hero-proof-sep" aria-hidden="true">·</span>
             <span>24/7</span>
           </div>
           <div class="hero-ctas">
             <button class="cta-primary mono" id="hero-call" type="button">
-              <span class="cta-pulse"></span>Hear a call
+              <span class="cta-pulse"></span>Hear a live call
             </button>
             <button class="cta-secondary mono" data-jump="work" type="button">See the work ↓</button>
           </div>
         </div>
 
-        <aside class="hero-side" aria-label="Live voice agents">
+        <aside class="hero-side" aria-label="Live work">
           <div class="hero-side-head mono">
             <span class="hero-side-status">
               <span class="hero-side-dot"></span>
               LIVE
             </span>
-            <span>VOICE AGENTS</span>
+            <span id="hs-category-label">IN PRODUCTION</span>
           </div>
           <div class="hero-side-body" id="hero-side-body">
             <div class="hero-side-row">
-              <div class="hero-side-avatar">
+              <div class="hero-side-avatar" id="hs-avatar">
                 <div class="waveform" data-active="true">
                   <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
                 </div>
@@ -513,7 +612,7 @@
           </div>
           <div class="hero-side-foot mono">
             <span id="hs-loc">MILWAUKEE, WI</span>
-            <span id="hs-counter">01 / 03</span>
+            <span id="hs-counter">01 / 08</span>
           </div>
         </aside>
       </div>
@@ -532,28 +631,44 @@
 
     <section id="about" class="about">
       <div class="about-label mono">ABOUT</div>
-      <div class="about-grid">
-        <p class="about-lead">
-          I build voice agents and AI applications that hold up under
-          real-world load — restaurants taking orders at 7pm, city offices
-          surveying thousands of residents, coworking spaces fielding
-          calls at 2am.
-        </p>
-        <div>
-          <div class="stat">
-            <span class="stat-k mono">Day</span>
-            <span class="stat-v">Senior Data Engineer — credit card data platforms at a Fortune 100 bank.</span>
-          </div>
-          <div class="stat">
-            <span class="stat-k mono">Night</span>
-            <span class="stat-v">Voice agents, image-gen apps, and the orchestration that keeps them up.</span>
-          </div>
-          <div class="stat">
-            <span class="stat-k mono">Stack</span>
-            <span class="stat-v">Retell AI, Claude, OpenAI, Gemini, ElevenLabs, Cartesia, Sarvam AI, Next.js, Supabase, Python.</span>
-          </div>
+
+      <h2 class="about-lead">
+        Senior Data Engineer by day. <span class="ink-accent">AI builder by night.</span>
+      </h2>
+
+      <div class="about-metrics">
+        <div class="about-metric">
+          <div class="about-metric-n">8</div>
+          <div class="about-metric-l mono">Systems live</div>
+        </div>
+        <div class="about-metric">
+          <div class="about-metric-n">4</div>
+          <div class="about-metric-l mono">Phone lines</div>
+        </div>
+        <div class="about-metric">
+          <div class="about-metric-n">3</div>
+          <div class="about-metric-l mono">RAG corpora</div>
         </div>
       </div>
+
+      <div class="about-facts">
+        <div class="stat">
+          <span class="stat-k mono">Day</span>
+          <span class="stat-v">Credit-card data platforms at a Fortune 100 bank.</span>
+        </div>
+        <div class="stat">
+          <span class="stat-k mono">Night</span>
+          <span class="stat-v">Voice agents, retrieval copilots, and generative apps — designed, shipped, monitored.</span>
+        </div>
+        <div class="stat">
+          <span class="stat-k mono">Stack</span>
+          <span class="stat-v">Claude · OpenAI · Retell · ElevenLabs · Sarvam AI · Supabase · pgvector · Next.js · Python</span>
+        </div>
+      </div>
+
+      <p class="about-footer">
+        <strong>Open to</strong> AI engineering, AI solutions engineering, and data engineering roles.
+      </p>
     </section>
   </main>
 
@@ -562,9 +677,11 @@
 <script>
   // ── Data ──────────────────────────────────────────────────────────
   const PROJECTS = [
+    // ── Voice agents ────────────────────────────────────────────────
     {
-      id: "fruition", num: "01", name: "Fruition MKE", codename: "Zara",
-      kind: "voice", role: "AI Receptionist", year: "2026", location: "Milwaukee, WI",
+      id: "fruition", num: "01", category: "voice",
+      name: "Fruition MKE", codename: "Zara",
+      role: "AI Receptionist", year: "2026", location: "Milwaukee, WI",
       summary: "Phone-based receptionist for a coworking space. Answers room availability, handles member inquiries, and routes after-hours calls.",
       detail: "Zara fields inbound calls 24/7, checks live room availability, qualifies prospective members, and books tours. Designed to sound like a calm front-desk lead, not a phone tree.",
       tags: ["Retell AI", "Claude API", "ElevenLabs", "Next.js"],
@@ -572,8 +689,9 @@
       phone: "+1 (414) 626 — 0319",
     },
     {
-      id: "franklin", num: "02", name: "Franklin CHA", codename: "Community Health",
-      kind: "voice", role: "Outbound Survey Agent", year: "2026", location: "Franklin, WI",
+      id: "franklin", num: "02", category: "voice",
+      name: "Franklin CHA", codename: "Community Health",
+      role: "Outbound Survey Agent", year: "2026", location: "Franklin, WI",
       summary: "Outbound voice AI conducting community health assessment surveys for a city public-health office.",
       detail: "Places thousands of outbound calls, collects structured survey responses with branching logic, and aggregates anonymized results into a dashboard for the city's epidemiology team.",
       tags: ["Retell AI", "Claude API", "Supabase", "Next.js"],
@@ -581,8 +699,9 @@
       phone: "+1 (414) 509 — 0699",
     },
     {
-      id: "ordra", num: "03", name: "Ordra", codename: "Kabab House",
-      kind: "voice", role: "Voice Ordering Agent", year: "2026", location: "Milwaukee, WI",
+      id: "ordra", num: "03", category: "voice",
+      name: "Ordra", codename: "Kabab House",
+      role: "Voice Ordering Agent", year: "2026", location: "Milwaukee, WI",
       summary: "Voice agent that takes phone orders for a restaurant — menu questions, dietary swaps, pickup timing.",
       detail: "Trained on the full menu and prep constraints. Handles modifications, allergens, and pickup windows; pushes orders to the POS via webhook. Built on Retell AI + Claude + ElevenLabs.",
       tags: ["Retell AI", "Claude API", "ElevenLabs", "Webhooks"],
@@ -590,26 +709,71 @@
       phone: "+1 (262) 233 — 1917",
     },
     {
-      id: "glint", num: "04", name: "Glint", codename: "Restaurant Autopilot",
-      kind: "image", typeLabel: "Social-media autopilot",
+      id: "meddo", num: "04", category: "voice",
+      name: "Meddo", codename: "Clinical Copilot",
+      role: "Clinical Voice AI", year: "2026", location: "India",
+      summary: "Voice-dictated SOAP notes, AI patient summaries, and automated follow-ups for physicians — built for the Indian clinic market.",
+      detail: "Voice-first clinical assistant aimed at reducing physician documentation burden. ElevenLabs powers the voice capture and natural follow-up generation; an LLM layer turns dictation into structured SOAP notes and surfaces pattern alerts across patient history. Designed for the workflow realities of Ayushman Bharat Digital Mission and small-clinic IT.",
+      tags: ["ElevenLabs", "Claude API", "Next.js", "Healthcare"],
+      href: "https://elevenlabsagent-meddo.vercel.app/",
+    },
+
+    // ── Knowledge & RAG ─────────────────────────────────────────────
+    {
+      id: "meridian", num: "05", category: "rag",
+      name: "Meridian", codename: "HR Copilot",
+      typeLabel: "Governed enterprise RAG",
+      role: "HR Knowledge Copilot", year: "2026", location: "Milwaukee, WI",
+      summary: "Persona-aware HR Q&A copilot with RBAC enforced at the data layer. Every retrieval is auditable, deprecated content stays out, and PII is redacted at query time.",
+      detail: "Single-shot RAG over a corpus of HR policies and SOPs. The pipeline embeds each query with OpenAI, runs three Postgres RPCs in parallel to compute both what was retrieved and what was filtered, redacts PII inline, generates with Claude Sonnet, and scores faithfulness on the answer. RLS enforces persona tiers in SQL — the same query that does vector similarity also enforces governance.",
+      tags: ["RAG", "Claude API", "OpenAI", "Supabase", "Next.js"],
+      href: "https://meridian-hr-copilot.vercel.app/",
+      sideQuote: `"What's our PTO carryover policy?"  →  cited in HR Handbook p.12`,
+    },
+    {
+      id: "supplylens", num: "06", category: "rag",
+      name: "SupplyLens", codename: "Supplier Intelligence",
+      typeLabel: "Procurement RAG",
+      role: "Supplier Q&A Copilot", year: "2026", location: "Milwaukee, WI",
+      summary: "Supplier intelligence RAG for procurement teams. Answers questions about contracts, SLAs, and compliance certifications with clause-level citations.",
+      detail: "Built for Rockwell's ISC AI Center of Excellence. Indexes thousands of supplier agreements into pgvector, embeds each query with OpenAI text-embedding-3-small, and generates with Claude Sonnet 4.6 — every answer is grounded in a specific clause from a specific document so a procurement lead can verify the source before acting on it. Retrieval is deterministic; only the synthesis step uses an LLM.",
+      tags: ["RAG", "Claude API", "OpenAI", "Supabase", "Next.js"],
+      href: "https://supplylens-seven.vercel.app/",
+      sideQuote: `"What's our liability cap with Vendor X?"  →  cited in MSA §4.2`,
+    },
+    {
+      id: "bruno", num: "07", category: "rag",
+      name: "Bruno", codename: "AI Product Support",
+      typeLabel: "Product manual RAG",
+      role: "AI Product Support Agent", year: "2026", location: "Oconomowoc, WI",
+      summary: "RAG copilot over 17 owner manuals for Bruno Independent Living Aids stair lifts, scooter lifts, and platform lifts. Every answer cites the manual and page.",
+      detail: "Ingestion pipeline parses 17 PDFs into 241 page-aware chunks, embeds with OpenAI text-embedding-3-small, and stores in Supabase pgvector with model + category metadata. The chat route runs vector search via a Postgres RPC and streams Claude Sonnet's grounded answer back as SSE — citations show the manual name, model code, and page so customers and dealers can verify every claim. No hallucinated specs, weights, or safety info.",
+      tags: ["RAG", "Claude API", "OpenAI", "Supabase", "Next.js"],
+      href: "https://bruno-manuals-agent.vercel.app/",
+      sideQuote: `"How do I fold the SRE-3050 rail?"  →  SRE-3050 manual, p.11`,
+    },
+
+    // ── Generative apps ─────────────────────────────────────────────
+    {
+      id: "glint", num: "08", category: "generative",
+      name: "Glint", codename: "Restaurant Autopilot",
+      typeLabel: "Multi-tenant content automation",
       role: "Social Media AI", year: "2026", location: "Oak Creek, WI",
       summary: "Multi-tenant social-media autopilot for restaurants — drafts a week of posts, runs the approval workflow, schedules, and tracks analytics. Live with Kabab House.",
       detail: "Tagline: \"Writes the week. You hit post.\" Generates week-ahead content, the owner approves what ships, the platform schedules and posts. Per-tenant analytics dashboard tracks performance. Built by haagLABS for restaurant operators who don't have time to feed the social-media monster.",
       tags: ["Content AI", "Multi-tenant", "Next.js"],
       href: "https://kababhouse-studio.vercel.app/",
-    },
-    {
-      id: "meridian", num: "05", name: "Meridian", codename: "HR Copilot",
-      kind: "image", typeLabel: "Governed enterprise RAG",
-      role: "HR Knowledge Copilot", year: "2026", location: "Milwaukee, WI",
-      summary: "Persona-aware HR Q&A copilot with RBAC enforced at the data layer. Every retrieval is auditable, deprecated content stays out, and PII is redacted at query time.",
-      detail: "Single-shot RAG over a corpus of HR policies and SOPs. The pipeline embeds each query with OpenAI, runs three Postgres RPCs in parallel to compute both what was retrieved and what was filtered, redacts PII inline, generates with Claude Sonnet, and scores faithfulness on the answer. RLS enforces persona tiers in SQL — the same query that does vector similarity also enforces governance.",
-      tags: ["RAG", "Claude API", "Supabase", "Next.js"],
-      href: "https://meridian-hr-copilot.vercel.app/",
+      sideQuote: `"Writes the week. You hit post."`,
     },
   ];
 
-  const ALL_TAGS = ["All", "Voice", "Image", "RAG", "Retell AI", "Claude API", "ElevenLabs", "Next.js", "Supabase"];
+  const CATEGORIES = [
+    { key: "voice",      label: "Voice Agents",     blurb: "Phone-based AI that picks up, listens, and acts." },
+    { key: "rag",        label: "Knowledge & RAG",  blurb: "Grounded retrieval copilots with citation-level traceability." },
+    { key: "generative", label: "Generative Apps",  blurb: "Content + workflow automation for operators." },
+  ];
+
+  const ALL_TAGS = ["All", "RAG", "Claude API", "OpenAI", "Retell AI", "ElevenLabs", "Supabase", "Next.js"];
 
   const TRANSCRIPTS = {
     fruition: [
@@ -654,8 +818,6 @@
 
   function filtered() {
     if (state.filter === "All") return PROJECTS;
-    if (state.filter === "Voice") return PROJECTS.filter((p) => p.kind === "voice");
-    if (state.filter === "Image") return PROJECTS.filter((p) => p.kind === "image");
     return PROJECTS.filter((p) => p.tags.includes(state.filter));
   }
 
@@ -686,19 +848,21 @@
   function rowHtml(p) {
     const isOpen = state.openId === p.id;
     const ctas = [];
-    if (p.kind === "voice") {
+    if (p.category === "voice") {
       ctas.push(`<button class="cta-primary mono" data-call="${esc(p.id)}">
         <span class="cta-pulse"></span>Call to talk
       </button>`);
-    } else if (p.kind === "image" && !p.pending) {
-      ctas.push(`<a class="cta-primary mono" href="${esc(p.href)}" target="_blank" rel="noreferrer" data-stop>Open app →</a>`);
-    } else if (p.kind === "image" && p.pending) {
-      ctas.push(`<span class="cta-disabled mono">Coming soon</span>`);
-    }
-    if (!p.pending && p.kind === "voice") {
       ctas.push(`<a class="cta-secondary mono" href="${esc(p.href)}" target="_blank" rel="noreferrer" data-stop>View live ↗</a>`);
+    } else if (p.pending) {
+      ctas.push(`<span class="cta-disabled mono">Coming soon</span>`);
+    } else {
+      ctas.push(`<a class="cta-primary mono" href="${esc(p.href)}" target="_blank" rel="noreferrer" data-stop>Open app →</a>`);
     }
 
+    const defaultType =
+      p.category === "voice" ? "Voice agent" :
+      p.category === "rag"   ? "Knowledge RAG" :
+      "Generative app";
     const tagsHtml = p.tags.map((t) => `<span class="row-tag mono">${esc(t)}</span>`).join("");
     const phoneLine = p.phone ? metaLine("Line", p.phone, true) : "";
 
@@ -729,7 +893,7 @@
                   <div class="row-tags">${tagsHtml}</div>
                 </div>
                 <div class="row-meta">
-                  ${metaLine("Type", p.typeLabel || (p.kind === "voice" ? "Voice agent" : "Image generator"))}
+                  ${metaLine("Type", p.typeLabel || defaultType)}
                   ${metaLine("Status", p.pending ? "Coming soon" : "Live")}
                   ${metaLine("Location", p.location)}
                   ${phoneLine}
@@ -750,7 +914,26 @@
       host.innerHTML = `<div class="empty mono">— no projects match this filter</div>`;
       return;
     }
-    host.innerHTML = list.map(rowHtml).join("");
+
+    const html = CATEGORIES.map((cat) => {
+      const items = list.filter((p) => p.category === cat.key);
+      if (items.length === 0) return "";
+      return `
+        <section class="cat">
+          <header class="cat-head">
+            <div class="cat-head-line">
+              <span class="cat-label mono">${esc(cat.label)}</span>
+              <span class="cat-count mono">${String(items.length).padStart(2, "0")}</span>
+            </div>
+            <div class="cat-blurb">${esc(cat.blurb)}</div>
+          </header>
+          <div class="cat-rows">
+            ${items.map(rowHtml).join("")}
+          </div>
+        </section>`;
+    }).join("");
+
+    host.innerHTML = html;
     wireRows();
   }
 
@@ -802,11 +985,29 @@
     });
   }
 
+  // ── Hero title rotator (AI Apps — Voice Agents / RAG / Social) ──
+  (function initHeroRotator() {
+    const $rot = $("#hero-rotator");
+    if (!$rot) return;
+    const labels = ["Voice Agents", "RAG Agents", "Social Media Agents"];
+    let i = 0;
+    setInterval(() => {
+      $rot.dataset.fading = "true";
+      setTimeout(() => {
+        i = (i + 1) % labels.length;
+        $rot.textContent = labels[i];
+        $rot.dataset.fading = "false";
+      }, 280);
+    }, 2800);
+  })();
+
   // ── Smooth-scroll nav ────────────────────────────────────────────
   $$("[data-jump]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const el = document.getElementById(btn.dataset.jump);
-      if (el) window.scrollTo({ top: el.offsetTop - 24, behavior: "smooth" });
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY - 16;
+      window.scrollTo({ top, behavior: "smooth" });
     });
   });
 
@@ -816,17 +1017,24 @@
     if (fruition) openCall(fruition);
   });
 
-  // ── Hero side panel: cycle through voice agents ──────────────────
+  // ── Hero side panel: cycle through ALL projects ──────────────────
   (function initHeroCycler() {
-    const voiceAgents = PROJECTS.filter((p) => p.kind === "voice");
-    if (voiceAgents.length === 0) return;
+    if (PROJECTS.length === 0) return;
 
-    const $body = $("#hero-side-body");
-    const $name = $("#hs-name");
-    const $meta = $("#hs-meta");
-    const $quote = $("#hs-quote");
-    const $loc = $("#hs-loc");
-    const $counter = $("#hs-counter");
+    const $body     = $("#hero-side-body");
+    const $name     = $("#hs-name");
+    const $meta     = $("#hs-meta");
+    const $quote    = $("#hs-quote");
+    const $loc      = $("#hs-loc");
+    const $counter  = $("#hs-counter");
+    const $avatar   = $("#hs-avatar");
+    const $catLabel = $("#hs-category-label");
+
+    const CAT_LABEL = {
+      voice:      "VOICE AGENT",
+      rag:        "RAG COPILOT",
+      generative: "GENERATIVE APP",
+    };
 
     const firstAgentLine = (id) => {
       const t = TRANSCRIPTS[id] || [];
@@ -834,26 +1042,52 @@
       return line ? line[1] : "";
     };
 
-    const total = String(voiceAgents.length).padStart(2, "0");
+    const sideQuote = (p) => {
+      if (p.category === "voice") {
+        const line = firstAgentLine(p.id);
+        return line ? `“${line}”` : "";
+      }
+      return p.sideQuote || "";
+    };
+
+    const avatarHtml = (cat) => {
+      if (cat === "voice") {
+        return `<div class="waveform" data-active="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>`;
+      }
+      if (cat === "rag") {
+        return `<div class="doc-stack" aria-hidden="true">
+          <span></span><span></span><span></span><span class="doc-underline"></span>
+        </div>`;
+      }
+      return `<div class="gen-grid" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>`;
+    };
+
+    const total = String(PROJECTS.length).padStart(2, "0");
     let idx = 0;
 
     const apply = (i) => {
-      const p = voiceAgents[i];
-      $name.textContent = p.codename;
-      $meta.textContent = `${p.name.toUpperCase()} · ${p.role.toUpperCase()}`;
-      $quote.textContent = `“${firstAgentLine(p.id)}”`;
-      $loc.textContent = (p.location || "").toUpperCase();
-      $counter.textContent = `${String(i + 1).padStart(2, "0")} / ${total}`;
+      const p = PROJECTS[i];
+      $name.textContent     = p.codename;
+      $meta.textContent     = `${p.name.toUpperCase()} · ${p.role.toUpperCase()}`;
+      $quote.textContent    = sideQuote(p);
+      $loc.textContent      = (p.location || "").toUpperCase();
+      $counter.textContent  = `${String(i + 1).padStart(2, "0")} / ${total}`;
+      $avatar.innerHTML     = avatarHtml(p.category);
+      $catLabel.textContent = CAT_LABEL[p.category] || "PRODUCTION";
     };
 
     apply(idx);
 
-    if (voiceAgents.length < 2) return;
+    if (PROJECTS.length < 2) return;
 
     setInterval(() => {
       $body.dataset.fading = "true";
       setTimeout(() => {
-        idx = (idx + 1) % voiceAgents.length;
+        idx = (idx + 1) % PROJECTS.length;
         apply(idx);
         $body.dataset.fading = "false";
       }, 320);
